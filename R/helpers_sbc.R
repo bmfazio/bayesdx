@@ -1,26 +1,15 @@
 ### probably should make a generalized add_x that takes a summary function
-#' @export
 rmse <- function(x, y)sqrt(mean((x - y)**2))
+bias <- function(x, y)mean(x - y)
 
 #' @export
-add_summary <- function(x, f) {
-  lapply(unique(x$stats$sim_id), \(i){ 
-    dplyr::left_join(
-    dplyr::filter(x$stats[,1:3], sim_id == i),
-    tidyr::pivot_longer(as.data.frame(posterior::as_draws_df(x$fits[[i]])),
-      cols = !dplyr::starts_with(".")),
-    by = c("variable" = "name")) |>
-    dplyr::group_by(variable) |>
-    eval(parse(text = paste0("dplyr::summarise(", paste(sapply(f,
-      \(z)paste0(z, " = ", z, "(simulated_value, value)")),
-      collapse = ", " ), ")"))) |>
-    dplyr::bind_cols(sim_id = i)
-  }) |> dplyr::bind_rows() |>
-  dplyr::left_join(x$stats, y = _, by = c("sim_id", "variable"))
+bdx_recovery <- function(x){
+  bdx_add_summaries(x, list(bias = bias, rmse = rmse))
 }
 
 #' @export
-add_rmse <- function(x) {
+bdx_add_summaries <- function(x, f) {
+  funs <- \(j,k){as.data.frame(lapply(f, \(g)g(j, k)))}
   lapply(unique(x$stats$sim_id), \(i){ 
     dplyr::left_join(
     dplyr::filter(x$stats[,1:3], sim_id == i),
@@ -28,7 +17,7 @@ add_rmse <- function(x) {
       cols = !dplyr::starts_with(".")),
     by = c("variable" = "name")) |>
     dplyr::group_by(variable) |>
-    dplyr::summarise(rmse = sqrt(mean((simulated_value - value)**2))) |>
+    dplyr::summarise(funs(value, simulated_value)) |>
     dplyr::bind_cols(sim_id = i)
   }) |> dplyr::bind_rows() |>
   dplyr::left_join(x$stats, y = _, by = c("sim_id", "variable"))
