@@ -21,7 +21,7 @@ rhat_scale <- scales::trans_new(
 rhat_theme <- list(
   palette = c("blue", "white", "red", "black"),
   heat = list(ggplot2::theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
     panel.border = ggplot2::element_rect(colour = "black", fill=NA,
       linewidth=2)),
     ggplot2::xlab(""), ggplot2::ylab(""),

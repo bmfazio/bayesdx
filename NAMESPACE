@@ -2,3 +2,5 @@
 
 export(bdx_add_summaries)
 export(bdx_recovery)
+export(rhat_heat)
+export(rhat_violin)
