@@ -33,7 +33,7 @@ rhat_heat <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
   # use same order as input
   data$rows <- ordfac(data$rows)
   data$cols <- ordfac(data$cols)
-  ggplot2::ggplot(data, ggplot2::aes(x = variable, y = sim_desc, fill = rhat)
+  ggplot2::ggplot(data, ggplot2::aes(x = cols, y = rows, fill = rhat)
   ) + ggplot2::geom_tile(
   ) + ggplot2::scale_fill_gradientn(colors = colors, values = values,
     breaks = values, labels = labels, limits = c(0,1)
