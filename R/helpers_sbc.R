@@ -1,7 +1,7 @@
-### probably should make a generalized add_x that takes a summary function
 rmse <- function(x, y)sqrt(mean((x - y)**2))
 bias <- function(x, y)mean(x - y)
 
+# Classic measures for parameter recovery
 #' @export
 bdx_recovery <- function(x){
   bdx_add_summaries(x, list(bias = bias, rmse = rmse))
