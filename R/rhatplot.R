@@ -24,9 +24,9 @@ rhat_violin <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
 #' @export
 rhat_heat <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
               colors = rhat_theme$palette) {
-  data <- group_by(data, rows, cols) |>
-  summarise(rhat = mean(rhat, na.rm = TRUE)) |>
-  mutate(rhat = rescale(data$rhat, bounds)**expscale + displace)
+  data <- dplyr::group_by(data, rows, cols) |>
+  dplyr::summarise(rhat = mean(rhat, na.rm = TRUE)) |>
+  dplyr::mutate(rhat = rescale(data$rhat, bounds)**expscale + displace)
   # plotting pars
   values <- c(0, 0.02, 0.1, 1)**expscale
   labels <- c("1", "1.01", "1.05", "1.5+")
