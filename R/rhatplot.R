@@ -1,7 +1,7 @@
 #' @export
-rhat_violin <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
+rhat_violin <- \(data, bounds = c(1, 1.5), expscale = 0.25,
                  colors = rhat_theme$palette) {
-  data$trans <- rescale(data$rhat, bounds)**expscale + displace
+  data$trans <- rescale(data$rhat, bounds)**expscale
   data$y <- "" # geom_violin complains if no 'y' is provided
   # values and labels can also probably be constructed from args
   values <- c(0, 0.02, 0.1, 1)**expscale
@@ -22,11 +22,11 @@ rhat_violin <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
 }
 
 #' @export
-rhat_heat <- \(data, bounds = c(1, 1.5), expscale = 0.25, displace = -1.05,
+rhat_heat <- \(data, bounds = c(1, 1.5), expscale = 0.25,
               colors = rhat_theme$palette) {
   data <- dplyr::group_by(data, rows, cols) |>
   dplyr::summarise(rhat = mean(rhat, na.rm = TRUE)) |>
-  dplyr::mutate(rhat = rescale(rhat, bounds)**expscale + displace)
+  dplyr::mutate(rhat = rescale(rhat, bounds)**expscale)
   # plotting pars
   values <- c(0, 0.02, 0.1, 1)**expscale
   labels <- c("1", "1.01", "1.05", "1.5+")
