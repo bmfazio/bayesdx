@@ -10,14 +10,6 @@ rescale <- function(x, bounds) {
   (x-l)/(u-l)
 }
 
-# Based on the pseudolog10 transformation, but displaces by -1.05 before it
-rhat_scale <- scales::trans_new(
-  name = "rhat_scale",
-  transform = function (x)asinh((x**0.25-1.05)*50)/log(10),
-  inverse = function (y)  (sinh(y * log(10))/50+1.05)**4,
-  breaks = function(...) c(1.01, 1.05, 1.2)
-)
-
 rhat_theme <- list(
   palette = c("blue", "white", "red", "black"),
   heat = list(ggplot2::theme(
